@@ -35,6 +35,11 @@ def save_image(images, folder_path, quality=40, compress_level=4):
             # Cases: image don't have getexif
             pass
         
+        # Resize image to width 500px while keeping aspect ratio
+        width_percent = (500 / float(img.size[0]))
+        height_size = int((float(img.size[1]) * float(width_percent)))
+        img = img.resize((500, height_size), Image.Resampling.LANCZOS)
+        
         # Save original image with reduced quality
         original_path = os.path.join(folder_path, f"o_{image.filename}")
         if image.filename.lower().endswith(('.jpg', '.jpeg')):
