@@ -12,7 +12,7 @@
 
 <body>
     <div class="container mt-4 px-auto">
-        <h1 class="mb-4">Form Input Gambar</h1>
+        <h1 class="mb-4">Form Input Foto</h1>
         <form method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="name" class="form-label">Nama</label>
@@ -23,11 +23,11 @@
                 <input type="text" id="nip" name="nip" class="form-control" required>
             </div>
             <div class="mb-3">
-                <label for="images" class="form-label">Pilih Gambar</label>
+                <label for="images" class="form-label">Pilih Foto</label>
                 <input type="file" id="images" name="images" class="form-control" aria-label="file example" multiple required>
             </div>
             <div class="d-flex justify-content-center mb-4">
-                <button type="submit" class="btn btn-primary me-2" onclick="return confirm('Apakah Anda yakin ingin submit?')">Submit</button>
+                <button type="submit" class="btn btn-primary me-2" onclick="return confirm('Apakah Anda yakin ingin submit?')">Upload Foto</button>
             </div>
         </form>
 
@@ -44,7 +44,7 @@
         {% endif %}
         {% endwith %}
         
-        <h2 class="mt-5">Daftar Folder dan Jumlah Gambar</h2>
+        <h2 class="mt-5">Daftar Folder dan Jumlah Foto</h2>
         <table id="foldersTable" class="table table-hover">
             <thead>
                 <tr>
@@ -56,7 +56,7 @@
                 {% for folder_name, image_count in folders_info %}
                 <tr>
                     <td>{{ folder_name }}</td>
-                    <td> <span class="badge bg-primary rounded-pill">{{ image_count }}</span></td>
+                    <td> <span class="badge bg-primary rounded-pill">{{ image_count/2 }}</span></td>
                 </tr>
                 {% endfor %}
             </tbody>

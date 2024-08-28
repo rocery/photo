@@ -18,22 +18,22 @@ if not os.path.exists(csv_data_photo_uploaded):
         writer = csv.writer(f)
         writer.writerow(['Photo_Path', 'Time_Upload'])
         
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+@app.route('/login_photo', methods=['GET', 'POST'])
+def login_photo():
     if request.method == 'POST':
         secret_key = request.form.get('secret_key')
         if secret_key == USER_SECRET_KEY:
             session['authenticated'] = True
-            return redirect(url_for('index'))
+            return redirect(url_for('upload_photo'))
         else:
             flash('Password salah, silahkan coba kembali.', 'danger')
-    
+
     return render_template('login.html')
-        
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    if not session.get('authenticated'):
-        return redirect(url_for('login'))
+
+@app.route('/upload_photo', methods=['GET', 'POST'])
+def upload_photo():
+    # if not session.get('authenticated'):
+    #     return redirect(url_for('login_photo'))
     
     if request.method == 'POST':
         nip = request.form['nip']
@@ -43,21 +43,21 @@ def index():
         # Input Validation
         if not name or not nip or not images:
             flash('Mohon isi semua form', 'danger')
-            return redirect(request.url)
+            return redirect(url_for('upload_photo'))
         
         if not "".join(name.split()).isalpha():
             flash('Nama harus berupa huruf', 'danger')
-            return redirect(request.url)
+            return redirect(url_for('upload_photo'))
 
         if not nip.isdigit():
             flash('NIP harus berupa angka', 'danger')
-            return redirect(request.url)
+            return redirect(url_for('upload_photo'))
         
         # Validasi format gambar
         for image in images:
             if not allowed_file(image.filename):
                 flash('Format gambar harus JPG, JPEG, atau PNG', 'danger')
-                return redirect(request.url)
+                return redirect(url_for('upload_photo'))
 
         formatted_name = format_name(name)
         folder_name = f"{formatted_name}_{nip}"
@@ -65,10 +65,10 @@ def index():
         
         save_image(images, folder_path)
         flash('Data {} berhasil disimpan'.format(folder_name), 'success')
-        return redirect(request.url)
+        return redirect(url_for('upload_photo'))
     
     folders_info = get_folders_info(app.config['UPLOAD_FOLDER'])
-    return render_template('index.html', folders_info=folders_info) 
+    return render_template('photo.html', folders_info=folders_info) 
         
 if __name__ == '__main__':
     # if debug True, camera only run once then blank or in another word: Error
